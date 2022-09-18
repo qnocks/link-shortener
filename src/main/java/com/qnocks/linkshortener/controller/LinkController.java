@@ -9,28 +9,23 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
-@RequestMapping("/api/links")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class LinkController {
-
-    // TODO: change controller's handlers to reactive ones
 
     private final LinkService linkService;
 
     @GetMapping("{url}")
-    public ResponseEntity<Void> redirect(@PathVariable String url) {
-        var link = linkService.getOriginUrl(url);
-        AtomicReference<String> lol = new AtomicReference<>("");
-        link.doOnSuccess(l -> lol.set(l.getOriginUrl()));
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(lol.get()))
-                .build();
+    public Mono<ResponseEntity<Void>> redirect(@PathVariable String url) {
+        return linkService.getOriginUrl(url)
+                .flatMap(res -> Mono.just(ResponseEntity.status(HttpStatus.FOUND)
+                        .location(URI.create(res.getOriginUrl()))
+                        .build()));
     }
 
-    @PostMapping
+    @PostMapping("/api/links")
     public Mono<Link> createShortLink(@RequestBody Link link) {
         return linkService.createShortLink(link);
     }

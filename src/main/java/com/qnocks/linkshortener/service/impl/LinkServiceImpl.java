@@ -15,6 +15,7 @@ import java.util.Random;
 public class LinkServiceImpl implements LinkService {
 
     private final LinkRepository linkRepository;
+    private final Random random;
 
     @Override
     public Mono<Link> createShortLink(Link link) {
@@ -25,12 +26,12 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Mono<Link> getOriginUrl(String url) {
-        return linkRepository.findByOriginUrl(url);
+        return linkRepository.findByShortUrl(url);
     }
 
     private String shortenUrl(String url) {
-        var random = new Random();
-        return RandomStringUtils.random(6, true, true) + url.charAt(random.nextInt(url.length()));
+        return RandomStringUtils.random(6, true, true) +
+                url.charAt(random.nextInt(url.length()));
     }
 }
 
