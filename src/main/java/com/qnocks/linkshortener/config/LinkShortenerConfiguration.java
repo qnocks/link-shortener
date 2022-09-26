@@ -7,8 +7,6 @@ import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 
-import java.util.Random;
-
 @Configuration
 public class LinkShortenerConfiguration {
 
@@ -16,10 +14,5 @@ public class LinkShortenerConfiguration {
     @Primary
     public ReactiveRedisOperations<String, String> reactiveRedisOperations(ReactiveRedisConnectionFactory factory) {
         return new ReactiveStringRedisTemplate(factory);
-    }
-
-    @Bean
-    public Random random() {
-        return new Random();
     }
 }
