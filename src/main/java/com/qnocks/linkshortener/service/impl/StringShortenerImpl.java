@@ -14,7 +14,7 @@ public class StringShortenerImpl implements StringShortener {
         return encode(Math.abs(decode(s)));
     }
 
-    public static String encode(int num) {
+    private static String encode(int num) {
         var sb = new StringBuilder();
         while (num > 0) {
             sb.insert(0, ALPHABET.charAt(num % BASE));
@@ -23,7 +23,7 @@ public class StringShortenerImpl implements StringShortener {
         return sb.toString();
     }
 
-    public static int decode(String s) {
+    private static int decode(String s) {
         var hash = 0;
         for (int i = 0; i < s.length(); i++) {
             hash = hash * BASE + ALPHABET.indexOf(s.charAt(i));

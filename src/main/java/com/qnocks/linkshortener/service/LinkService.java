@@ -7,5 +7,7 @@ public interface LinkService {
 
     Mono<Link> createShortLink(Link link);
 
-    Mono<Link> getOriginUrl(String url);
+    Mono<Link> processRedirect(String originUrl);
+
+    Mono<Link> getOriginUrl(String originUrl);
 }

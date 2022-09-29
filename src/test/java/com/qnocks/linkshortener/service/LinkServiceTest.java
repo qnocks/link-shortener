@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class LinkServiceTest {
@@ -41,6 +41,24 @@ public class LinkServiceTest {
         StepVerifier
                 .create(underTest.createShortLink(link))
                 .consumeNextWith(l -> assertThat(l.getShortUrl().equals(shortUrl)))
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldProcessRedirect() {
+        val url = "https://www.google.ru/search?q=hello+world";
+        val shortUrl = "4rJ5d4";
+        val link = Link.builder()
+                .originUrl(url)
+                .shortUrl(shortUrl)
+                .redirectCount(3)
+                .build();
+
+        when(linkRepository.findByShortUrl(url)).thenReturn(Mono.just(link));
+
+        StepVerifier
+                .create(underTest.processRedirect(url))
+                .consumeNextWith(l -> assertThat(l.getRedirectCount() == 4))
                 .verifyComplete();
     }
 

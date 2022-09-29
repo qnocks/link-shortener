@@ -1,7 +1,7 @@
 package com.qnocks.linkshortener.repository;
 
 import com.qnocks.linkshortener.AbstractIntegrationTest;
-import com.qnocks.linkshortener.RedisConfigurationTest;
+import com.qnocks.linkshortener.TestRedisConfiguration;
 import com.qnocks.linkshortener.dto.Link;
 import com.qnocks.linkshortener.repository.impl.LinkRepositoryRedisImpl;
 import lombok.val;
@@ -14,7 +14,7 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = RedisConfigurationTest.class)
+@SpringBootTest(classes = TestRedisConfiguration.class)
 public class LinkRepositoryRedisTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -40,10 +40,6 @@ public class LinkRepositoryRedisTest extends AbstractIntegrationTest {
     void shouldFindByShortUrl() {
         val url = "https://www.google.ru/search?q=hello+world";
         val shortUrl = "4rJ5d4";
-        val link = Link.builder()
-                .originUrl(url)
-                .shortUrl(shortUrl)
-                .build();
 
         StepVerifier
                 .create(underTest.findByShortUrl(shortUrl))

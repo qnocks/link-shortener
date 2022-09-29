@@ -23,36 +23,15 @@ public class LinkControllerTest extends AbstractIntegrationTest {
     private LinkServiceImpl linkService;
 
     @Test
-    void shouldRedirect() {
-        val url = "https://www.google.ru/search?q=hello+world";
-        val shortUrl = "647sda";
-        val link = Link.builder()
-                .originUrl(url)
-                .shortUrl(shortUrl)
-                .build();
-
-        when(linkService.getOriginUrl(shortUrl)).thenReturn(Mono.just(link));
-
-        webClient
-                .get().uri("/{url}", shortUrl)
-                .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().location(url)
-                .expectBody().isEmpty();
-    }
-
-    @Test
     void shouldCreateShortLink() {
         val url = "https://www.google.ru/search?q=hello+world";
         val expectedShortUrl = "647sda";
         val link = Link.builder()
                 .originUrl(url)
+                .shortUrl(expectedShortUrl)
                 .build();
 
-        when(linkService.createShortLink(link)).thenReturn(Mono.just(Link.builder()
-                .shortUrl(expectedShortUrl)
-                .originUrl(url)
-                .build()));
+        when(linkService.createShortLink(link)).thenReturn(Mono.just(link));
 
         webClient
                 .post().uri("/api/links")
@@ -62,7 +41,31 @@ public class LinkControllerTest extends AbstractIntegrationTest {
                 .isOk()
                 .expectBody()
                 .jsonPath("originUrl").isEqualTo(url)
-                .jsonPath("shortUrl").isEqualTo(expectedShortUrl);
+                .jsonPath("shortUrl").isEqualTo(expectedShortUrl)
+                .jsonPath("redirectCount").isEqualTo(0);
+    }
+
+    @Test
+    void shouldGetLinkInfo() {
+        val url = "https://www.google.ru/search?q=hello+world";
+        val shortUrl = "647sda";
+        val link = Link.builder()
+                .shortUrl(shortUrl)
+                .originUrl(url)
+                .redirectCount(3)
+                .build();
+
+        when(linkService.getOriginUrl(shortUrl)).thenReturn(Mono.just(link));
+
+        webClient
+                .get().uri("/api/links/{url}", shortUrl)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("originUrl").isEqualTo(url)
+                .jsonPath("shortUrl").isEqualTo(shortUrl)
+                .jsonPath("redirectCount").isEqualTo(link.getRedirectCount());
     }
 }
 
