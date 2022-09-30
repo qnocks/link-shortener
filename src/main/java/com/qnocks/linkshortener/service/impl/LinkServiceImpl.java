@@ -26,6 +26,7 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Mono<Link> processRedirect(String originUrl) {
+        // TODO: doOnSuccess calls every time?
         return linkRepository.findByShortUrl(originUrl).doOnSuccess(link -> {
             link.setRedirectCount(link.getRedirectCount() + 1);
             linkRepository.update(link);

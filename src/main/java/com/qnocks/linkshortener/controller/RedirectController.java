@@ -1,6 +1,8 @@
 package com.qnocks.linkshortener.controller;
 
 import com.qnocks.linkshortener.service.LinkService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import java.net.URI;
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
+@Tag(name = "Redirect Controller", description = "API to redirect to urls")
 public class RedirectController {
 
     private final LinkService linkService;
 
+    @Operation(summary = "Redirect", description = "Redirect to original url by the short one")
     @GetMapping("{url}")
     public Mono<ResponseEntity<Void>> redirect(@PathVariable String url) {
         return linkService.processRedirect(url)
