@@ -1,30 +1,30 @@
 package com.qnocks.linkshortener.controller;
 
-import com.qnocks.linkshortener.dto.Link;
 import com.qnocks.linkshortener.service.LinkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 @RestController
-@RequestMapping("/api/links")
+@RequestMapping("/")
 @RequiredArgsConstructor
-public class LinkController {
+public class RedirectController {
 
     private final LinkService linkService;
 
-    @PostMapping
-    public Mono<Link> createShortLink(@RequestBody Link link) {
-        return linkService.createShortLink(link);
-    }
-
     @GetMapping("{url}")
-    public Mono<Link> getLinkInfo(@PathVariable String url) {
-        return linkService.getOriginUrl(url);
+    public Mono<ResponseEntity<Void>> redirect(@PathVariable String url) {
+        return linkService.processRedirect(url)
+                .flatMap(res -> Mono.just(ResponseEntity
+                        .status(HttpStatus.FOUND)
+                        .location(URI.create(res.getOriginUrl()))
+                        .build()));
     }
 }

@@ -13,22 +13,22 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class LinkRepositoryRedisImpl implements LinkRepository {
 
-    private final ReactiveRedisOperations<String, String> storage;
+    private final ReactiveRedisOperations<String, Link> storage;
 
     @Override
     public Mono<Link> save(Link link) {
         return storage.opsForValue()
-                .set(link.getShortUrl(), link.getOriginUrl())
+                .set(link.getShortUrl(), link)
                 .map(__ -> link);
     }
 
     @Override
     public Mono<Link> findByShortUrl(String shortUrl) {
-        return storage.opsForValue()
-                .get(shortUrl)
-                .map(url -> Link.builder()
-                        .originUrl(url)
-                        .shortUrl(shortUrl)
-                        .build());
+        return storage.opsForValue().get(shortUrl);
+    }
+
+    @Override
+    public void update(Link link) {
+        save(link).subscribe();
     }
 }

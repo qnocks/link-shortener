@@ -7,4 +7,6 @@ public interface LinkRepository {
 
     Mono<Link> save(Link link);
     Mono<Link> findByShortUrl(String url);
+
+    void update(Link link);
 }
