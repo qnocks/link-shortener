@@ -8,3 +8,13 @@ spring:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
     password: ${REDIS_PASS}
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+springdoc:
+  api-docs:
+    path: /api/docs
+  swagger-ui:
+    path: /swagger-ui.html
