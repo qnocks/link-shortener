@@ -6,9 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LinkShortenerApplication {
 
-    // TODO: validation
-    // TODO: error handling
-    // TODO: dockerize app
+    // TODO: error handling (validation, custom exception)
     // TODO: stressful tests
     // TODO: README
     // TODO: auth?

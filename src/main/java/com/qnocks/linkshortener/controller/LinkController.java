@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/links")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class LinkController {
 
     @Operation(summary = "Create short link", description = "Generate short url for the given one")
     @PostMapping
-    public Mono<Link> createShortLink(@RequestBody Link link) {
+    public Mono<Link> createShortLink(@Valid @RequestBody Link link) {
         return linkService.createShortLink(link);
     }
 

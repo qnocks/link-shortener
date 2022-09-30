@@ -2,13 +2,14 @@
 
 ## Overview
 
+Application allows to reduce long links and track statistics for your business and projects by monitoring the number of hits from your URL with the click counter
+
 ### Build with
 
 * Java 11
-* Spring Boot
+* Spring Boot (Reactive stack)
 * Redis
-* Docker
-* Docker compose
+* Docker, docker-compose
 * Lombok
 
 ## Usage
