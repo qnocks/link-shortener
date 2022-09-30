@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
+
 @RestController
 @RequestMapping("/api/links")
 @RequiredArgsConstructor
@@ -30,6 +31,11 @@ public class LinkController {
     }
 
     @Operation(summary = "Get Link info", description = "Show short url and redirect counts for the url")
+    @GetMapping("{url}")
+    public Mono<Link> getLinkInfo(@PathVariable String url) {
+        return linkService.getOriginUrl(url);
+    }
+
     @GetMapping("{url}")
     public Mono<Link> getLinkInfo(@PathVariable String url) {
         return linkService.getOriginUrl(url);
