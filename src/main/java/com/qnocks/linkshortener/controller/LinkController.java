@@ -35,9 +35,4 @@ public class LinkController {
     public Mono<Link> getLinkInfo(@PathVariable String url) {
         return linkService.getOriginUrl(url);
     }
-
-    @GetMapping("{url}")
-    public Mono<Link> getLinkInfo(@PathVariable String url) {
-        return linkService.getOriginUrl(url);
-    }
 }
