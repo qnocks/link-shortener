@@ -1,10 +1,13 @@
 server:
+  address: ${SERVER_HOST}
   port: ${SERVER_PORT}
   error:
     include-message: always
     include-stacktrace: on_param
 
 spring:
+  config:
+    import: file:env.properties
   application:
     name: link-shortener
   redis:
@@ -14,7 +17,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
 
 springdoc:
   api-docs:

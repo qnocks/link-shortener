@@ -4,16 +4,16 @@ services:
     container_name: redis
     image: redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:${REDIS_PORT}"
     volumes:
       - redis:/data
   app:
     container_name: link-shortener-spring
     image: link-shortener-spring
     env_file:
-      - app.env
+      - .env
     ports:
-      - "8090:8090"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - redis
 
