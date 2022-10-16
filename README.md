@@ -7,12 +7,31 @@ Application allows to reduce long links and track statistics for your business a
 ### Build with
 
 * Java 11
-* Spring Boot (Reactive stack)
+* Spring Boot
 * Redis
 * Docker, docker-compose
 * Lombok
 
 ## Usage
+
+Create `.env` file with a configuration:
+```
+SERVER_HOST=<server_host>
+SERVER_PORT=<server_port>
+REDIS_HOST=<redis_host>
+REDIS_PORT=<redis_port>
+REDIS_PASS=<redis_password>
+```
+
+Run following to create `.properties` file from `.env` for Spring Boot importing:
+
+`$ ln -s .env env.properties`
+
+Then spin up docker containers:
+
+`$ docker-compose up`
+
+See allowed endpoints to `http://<server_host>:<server_port>/swagger-ui.html` 
 
 ## License
 
